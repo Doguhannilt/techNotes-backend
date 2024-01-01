@@ -2,9 +2,27 @@
 const express = require('express')
 const app = express()
 const path = require('path')
+
+// Error Handler
+const errorHandler = require('./middleware/errorHandler')
+
+// Logger
+const {logger} = require('./middleware/logger')
+app.use(logger)
+
+// Cookie Parser
+const cookieParser = require('cookie-parser')
+
+// Cors
+const cors = require('cors')
+const corsOptions = require('./config/corsOptions')
+
 // PORT 
 const PORT = process.env.PORT || 3500
 
+app.use(cors(corsOptions))
+app.use(express.json())
+app.use(cookieParser())
 
 // This middleware configuration serves static files from the 'public' directory
 // when a request is made to the root path ('/') of the Express application.
@@ -13,7 +31,9 @@ const PORT = process.env.PORT || 3500
 // as HTML, CSS, and client-side JavaScript files when accessing the root route.
 // Example: If there is a file 'example.html' in the 'public' directory, it can be
 // accessed in the browser by navigating to 'http://yourdomain.com/example.html'.
-app.use('/', express.static(path.join(__dirname, '/public')))
+app.use('/', express.static(path.join(__dirname, 'public')))
+    // It's still useful
+// app.use('/', express.static('public'))
 
 
 // This middleware configuration associates the root path ('/') of the Express
@@ -44,6 +64,8 @@ app.all('*', (req,res) =>{
         res.type('txt').send('404 Not Found')
     }
 })
+
+app.use(errorHandler)
 
 app.listen(PORT, () => {
     console.log("Server Running...")
