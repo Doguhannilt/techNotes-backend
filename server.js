@@ -59,6 +59,8 @@ app.use('/', express.static(path.join(__dirname, 'public')))
 // the necessary route handlers using the 'module.exports' syntax.
 app.use('/', require('./routes/root'))
 
+app.use('/users', require('./routes/userRoutes'))
+
 
 // This middleware function handles all requests that do not match any defined routes.
 // It responds with a 404 status code and provides different responses based on the client's
