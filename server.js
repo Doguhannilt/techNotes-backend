@@ -1,3 +1,8 @@
+// Dotenv is a file format and method commonly used to store environmental variables in a project. 
+// It typically involves creating a .env file to hold sensitive information such as API keys and credentials, 
+// providing a more secure way to manage and access these variables across different environments.
+require('dotenv').config()
+
 // Required libraries
 const express = require('express')
 const app = express()
@@ -11,11 +16,20 @@ const {logger} = require('./middleware/logger')
 app.use(logger)
 
 // Cookie Parser
+/*Cookie parser is a software library used in web development that 
+helps to parse ( parsing means to analyze or break up something ) 
+and extract cookie data from HTTP requests. */
 const cookieParser = require('cookie-parser')
 
 // Cors
 const cors = require('cors')
 const corsOptions = require('./config/corsOptions')
+
+// MongoDB
+const connectDB = require('./config/dbConn')
+const mongoose = require('mongoose')
+const {logEvents } = require('./middleware/logger')
+
 
 // PORT 
 const PORT = process.env.PORT || 3500
@@ -23,6 +37,7 @@ const PORT = process.env.PORT || 3500
 app.use(cors(corsOptions))
 app.use(express.json())
 app.use(cookieParser())
+connectDB()
 
 // This middleware configuration serves static files from the 'public' directory
 // when a request is made to the root path ('/') of the Express application.
@@ -32,7 +47,6 @@ app.use(cookieParser())
 // Example: If there is a file 'example.html' in the 'public' directory, it can be
 // accessed in the browser by navigating to 'http://yourdomain.com/example.html'.
 app.use('/', express.static(path.join(__dirname, 'public')))
-    // It's still useful
 // app.use('/', express.static('public'))
 
 
@@ -66,7 +80,14 @@ app.all('*', (req,res) =>{
 })
 
 app.use(errorHandler)
+mongoose.connection.once('open', () => {
+    console.log('Connected to MongoDB')
+    app.listen(PORT, () => {
+        console.log("Server Running...")
+    })
+})
 
-app.listen(PORT, () => {
-    console.log("Server Running...")
+mongoose.connection.on('error', err => {
+    console.log(err)
+    logEvents(`${err.no}: ${err.code} \t ${err.syscall} \t ${err.hostname}`, 'mongoErrLog.log')
 })
