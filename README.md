@@ -4,7 +4,7 @@
 <p>Note: Everything will be explained based on repository folders.</p>
 <h3>Repository Index:</h3>
 <lu>
-  <li><a href="https://github.com/Doguhannilt/techNotes-backend/tree/master#project-dependecies">Project Dependicies</a></li>
+  <li><a href="https://github.com/Doguhannilt/techNotes-backend/tree/master#project-dependencies">Project Dependincies</a></li>
   <li><a href="https://github.com/Doguhannilt/techNotes-backend/tree/master#routes">Routes</a></li>
   <li><a href="https://github.com/Doguhannilt/techNotes-backend/tree/master#middleware">Middleware</a></li>
   <li><a hreF="https://github.com/Doguhannilt/techNotes-backend/tree/master#cors">CORS</a></li>
@@ -12,7 +12,7 @@
   <li><a href="https://github.com/Doguhannilt/techNotes-backend/tree/master#mongodb-connection">MongoDB Connection</a></li>
 </lu>
 
-<h1>Project Dependecies</h1>
+<h1>Project Dependencies</h1>
 <table>
   <tr>
     <th>Package</th>
